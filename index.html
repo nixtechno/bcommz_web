@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="BCOMMZ is a configurable white-label event-management application for registration, payments, attendees, speakers, schedules, check-in, badges, engagement, and mobile event experiences."
+  />
+  <title>BCOMMZ | Event Management Application</title>
+
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: "#319db5",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Libre+Baskerville:wght@700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --button-radius: 50px;
+      --box-radius: 20px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .button-shape {
+      border-radius: var(--button-radius);
+    }
+
+    .content-box {
+      border-radius: var(--box-radius);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: reveal 0.8s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
+
+    .delay-1 { animation-delay: 0.08s; }
+    .delay-2 { animation-delay: 0.18s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.42s; }
+    .delay-5 { animation-delay: 0.54s; }
+
+    .brand-box {
+      animation: brand-pulse 2.8s ease-in-out infinite;
+    }
+
+    .nav-link {
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #525252;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: #f5f5f5;
+      color: #0a0a0a;
+    }
+
+    .nav-link.active {
+      background: #0a0a0a;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .image-frame {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #f5f5f5;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.11);
+    }
+
+    .dark .image-frame {
+      background: #171717;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 0.9s ease, transform 5.5s ease;
+    }
+
+    .hero-slide.is-active {
+      opacity: 1;
+      transform: scale(1.065);
+    }
+
+    .slide-dot {
+      border-radius: 4px;
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 0.9s ease, transform 5.5s ease;
+    }
+
+    .hero-slide.is-active {
+      opacity: 1;
+      transform: scale(1.065);
+    }
+
+    .slide-dot {
+      border-radius: 4px;
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      margin-left: 4px;
+      vertical-align: -0.08em;
+      background: currentColor;
+      animation: blink 0.75s steps(1) infinite;
+    }
+
+    .button-arrow {
+      transition: transform 0.3s cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .primary-action:hover .button-arrow {
+      transform: translate(3px, -3px);
+    }
+
+    .theme-icon {
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .ai-logo-link {
+      display: block;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .ai-logo-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.13);
+    }
+
+    .ai-logo-link img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .placeholder-card {
+      min-height: 210px;
+    }
+
+    @keyframes reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes brand-pulse {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-2px);
+      }
+    }
+
+    @keyframes blink {
+      0%, 46% {
+        opacity: 1;
+      }
+
+      47%, 100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes partner-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .partner-track {
+      animation: partner-scroll 45s linear infinite;
+    }
+
+    .partner-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scroll-left {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @keyframes scroll-right {
+      from { transform: translateX(-50%); }
+      to   { transform: translateX(0); }
+    }
+
+    .feature-track-left {
+      animation: scroll-left 38s linear infinite;
+    }
+
+    .feature-track-right {
+      animation: scroll-right 42s linear infinite;
+    }
+
+    .feature-track-left:hover,
+    .feature-track-right:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes badge-float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-9px); }
+    }
+    @keyframes badge-float-b {
+      0%, 100% { transform: translateY(-4px); }
+      50% { transform: translateY(7px); }
+    }
+    .badge-float  { animation: badge-float  4s  ease-in-out infinite; }
+    .badge-float-b { animation: badge-float-b 4.6s ease-in-out infinite; }
+
+    .feature-col-fade {
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%);
+      mask-image: linear-gradient(to right, transparent 0%, black 12%);
+    }
+
+    .partner-fade {
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%);
+    }
+
+    @media (max-width: 639px) {
+      .hero-title {
+        font-size: clamp(1rem, 5.4vw, 1.5rem);
+      }
+
+      .ai-logo-link {
+        width: 52px;
+        height: 52px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .hero-slide {
+        transition: none;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-white font-sans text-neutral-950 transition-colors duration-300 dark:bg-neutral-950 dark:text-white">
+
+  <!-- Sticky nav -->
+  <header class="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur-md transition-colors duration-300 dark:border-neutral-800 dark:bg-neutral-950/90">
+    <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-5 px-6 py-6 sm:px-10 lg:px-16">
+      <div class="flex min-w-0 items-center gap-7 lg:gap-12">
+        <a href="#home" class="inline-flex shrink-0 items-center" aria-label="BCOMMZ home">
+          <span class="inline-flex items-center text-2xl font-extrabold tracking-[0.14em]">
+            <span class="brand-box mr-2 inline-grid h-8 w-8 place-items-center rounded-lg bg-brand text-base tracking-normal text-white">
+              B
+            </span>
+            <span>COMMZ</span>
+          </span>
+        </a>
+
+        <nav class="hidden items-center gap-1 lg:flex">
+          <a href="#platform" class="nav-link active">Platform</a>
+          <a href="#solutions" class="nav-link">Solutions</a>
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#integrations" class="nav-link">Integrations</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-2.5">
+        <div class="hidden items-center gap-2 lg:flex">
+          <a href="#" aria-label="Instagram" class="grid h-8 w-8 place-items-center rounded-full bg-[#319db5] transition hover:bg-[#2a87a0]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-[15px] w-[15px]">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="LinkedIn" class="grid h-8 w-8 place-items-center rounded-full bg-[#319db5] transition hover:bg-[#2a87a0]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-[15px] w-[15px]">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="X" class="grid h-8 w-8 place-items-center rounded-full bg-[#319db5] transition hover:bg-[#2a87a0]">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="h-[13px] w-[13px]" fill="white">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817-5.967 6.817H1.68l7.73-8.835L1.254 2.25h6.826l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+            </svg>
+          </a>
+          <a href="#" aria-label="Facebook" class="grid h-8 w-8 place-items-center rounded-full bg-[#319db5] transition hover:bg-[#2a87a0]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-[15px] w-[15px]">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="relative bg-white transition-colors duration-300 dark:bg-neutral-950">
+    <img src="herobg.png" alt="" aria-hidden="true" class="pointer-events-none absolute top-0 right-0 w-[820px] opacity-[0.28] dark:opacity-[0.12]" />
+    <div class="relative mx-auto flex max-w-[1400px] flex-col justify-center px-6 py-8 sm:px-10 lg:px-16">
+
+      <div class="grid flex-1 items-center gap-11 py-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:py-8">
+
+        <!-- Wider image column -->
+        <div class="reveal delay-2 order-2 lg:order-1">
+          <div class="image-frame h-[280px] sm:h-[370px] lg:h-[440px]">
+            <img
+              src="https://images.pexels.com/photos/7648057/pexels-photo-7648057.jpeg?auto=compress&cs=tinysrgb&w=1800"
+              alt="Event registration and attendee check-in"
+              class="hero-slide is-active"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1800&q=90"
+              alt="Conference stage and audience"
+              class="hero-slide"
+            />
+            <img
+              src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1800&q=90"
+              alt="Large live event with an engaged audience"
+              class="hero-slide"
+            />
+            <div class="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2">
+              <button type="button" class="slide-dot h-2.5 w-7 bg-white shadow-sm" aria-label="Show registration image"></button>
+              <button type="button" class="slide-dot h-2.5 w-2.5 bg-white/55 shadow-sm" aria-label="Show conference image"></button>
+              <button type="button" class="slide-dot h-2.5 w-2.5 bg-white/55 shadow-sm" aria-label="Show live event image"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-1 text-left lg:order-2">
+          <h1 class="hero-title reveal delay-1 max-w-3xl text-[clamp(1.25rem,4.2vw,3.45rem)] font-extrabold leading-[1.03] tracking-[-0.04em] text-neutral-950 dark:text-white" style="font-family: 'Libre Baskerville', serif;">
+            <span class="block whitespace-nowrap">Everything your event needs.</span>
+            <span class="block whitespace-nowrap text-neutral-400 dark:text-neutral-500">One platform behind it all.</span>
+          </h1>
+
+          <p class="reveal delay-3 mt-6 max-w-xl text-base leading-8 text-neutral-600 dark:text-neutral-400 sm:text-lg">
+            BCOMMZ brings registration, payments, attendee management, speakers, schedules,
+            check-in, badges, communication, and mobile engagement into one configurable application.
+          </p>
+
+          <div class="reveal delay-3 mt-5 flex min-h-7 items-center gap-2 text-sm font-bold text-neutral-500 dark:text-neutral-400">
+            <span>Built for</span>
+            <span id="typing-text" class="text-neutral-950 dark:text-white"></span>
+            <span class="typing-cursor text-neutral-950 dark:text-white"></span>
+          </div>
+
+          <div class="reveal delay-4 mt-8 flex flex-wrap gap-4">
+            <a
+              href="#contact"
+              class="button-shape primary-action inline-flex items-center bg-neutral-950 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-black/10 transition hover:bg-neutral-800 hover:shadow-xl dark:bg-white dark:text-neutral-950 dark:hover:bg-neutral-200"
+            >
+              Book a demo
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="button-arrow ml-2 h-4 w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </a>
+
+            <a
+              href="#platform"
+              class="button-shape inline-flex items-center border border-neutral-300 bg-transparent px-7 py-3.5 text-sm font-bold text-neutral-800 transition hover:border-neutral-950 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:border-neutral-500 dark:hover:bg-neutral-900"
+            >
+              Explore the platform
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="ml-2 h-4 w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="reveal delay-5 mt-9 flex flex-wrap gap-x-8 gap-y-5">
+            <div class="text-left">
+              <p class="text-2xl font-extrabold tracking-tight text-neutral-950 dark:text-white">48,000+</p>
+              <p class="mt-0.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">Delegates managed</p>
+            </div>
+            <div class="w-px self-stretch bg-neutral-200 dark:bg-neutral-800"></div>
+            <div class="text-left">
+              <p class="text-2xl font-extrabold tracking-tight text-neutral-950 dark:text-white">120+</p>
+              <p class="mt-0.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">Events powered</p>
+            </div>
+            <div class="w-px self-stretch bg-neutral-200 dark:bg-neutral-800"></div>
+            <div class="text-left">
+              <p class="text-2xl font-extrabold tracking-tight text-neutral-950 dark:text-white">14</p>
+              <p class="mt-0.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">Countries reached</p>
+            </div>
+            <div class="w-px self-stretch bg-neutral-200 dark:bg-neutral-800"></div>
+            <div class="text-left">
+              <p class="text-2xl font-extrabold tracking-tight text-neutral-950 dark:text-white">99.2%</p>
+              <p class="mt-0.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">Check-in accuracy</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Partners logo strip -->
+    <div class="border-t border-neutral-100 py-4">
+      <div class="partner-fade overflow-hidden">
+        <div class="partner-track flex w-max items-center gap-16 py-2">
+          <img src="partners/logo1.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo2.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo3.svg" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo4.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+
+          <img src="partners/logo1.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo2.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo3.svg" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo4.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo1.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo2.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo3.svg" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo4.png" alt="Partner" class="h-10 w-auto object-contain opacity-90" />
+          <!-- duplicate set for seamless loop -->
+          <img src="partners/logo1.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo2.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo3.svg" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo4.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo1.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo2.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo3.svg" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo4.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo1.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo2.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo3.svg" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+          <img src="partners/logo4.png" alt="Partner" aria-hidden="true" class="h-10 w-auto object-contain opacity-90" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platform" class="bg-neutral-950 pt-14 pb-24">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+      <div class="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+
+        <!-- Left: text -->
+        <div>
+          <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-[#319db5]">What we manage</p>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
+            Every touchpoint.<br>Every delegate.<br>Handled.
+          </h2>
+          <p class="mt-6 text-base leading-8 text-neutral-400">
+            From the moment someone discovers your event to the final badge scan at the door — BCOMMZ manages the entire delegate journey. Your team sets the parameters. We handle the rest.
+          </p>
+
+          <ul class="mt-10 space-y-6">
+            <li class="flex items-start gap-4">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#319db5]"></span>
+              <div>
+                <p class="font-bold text-white">Branded event website</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-400">A public-facing event site with speakers, agenda, sponsors, and live online registration.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#319db5]"></span>
+              <div>
+                <p class="font-bold text-white">Registration & payments</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-400">Multi-tier ticketing, access codes, capacity control, and integrated payment processing.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#319db5]"></span>
+              <div>
+                <p class="font-bold text-white">On-site check-in & badge printing</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-400">QR scanning at the door with instant delegate verification and automated badge generation.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#319db5]"></span>
+              <div>
+                <p class="font-bold text-white">Companion mobile app</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-400">Personal agendas, live streams, push notifications, and attendee networking — in one app.</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#319db5]"></span>
+              <div>
+                <p class="font-bold text-white">Communications & reporting</p>
+                <p class="mt-1 text-sm leading-6 text-neutral-400">Automated emails, SMS, and push campaigns — plus live attendance and revenue reporting.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right: image placeholder -->
+        <div class="content-box flex min-h-[560px] flex-col items-center justify-center border border-neutral-800 bg-neutral-900 p-10">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+          </svg>
+          <p class="mt-5 max-w-xs text-center text-xs italic leading-6 text-neutral-600">
+            Branded public event website — hero banner with event name, date, and countdown; speaker grid with headshots and bios; tabbed agenda; tiered sponsor logos; and a live registration button with ticket pricing visible
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="bg-white py-24">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+      <div class="grid items-center gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+
+        <!-- Left: text -->
+        <div>
+          <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-[#319db5]">The platform</p>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-neutral-950 sm:text-4xl lg:text-5xl">
+            Built for every layer of the event
+          </h2>
+          <p class="mt-5 text-base leading-8 text-neutral-600">
+            BCOMMZ covers the full event stack — from pre-event configuration and public registration through to on-site operations and post-event reporting.
+          </p>
+          <a
+            href="#contact"
+            class="button-shape primary-action mt-8 inline-flex items-center bg-neutral-950 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-black/10 transition hover:bg-neutral-800 hover:shadow-xl"
+          >
+            Book a demo
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="button-arrow ml-2 h-4 w-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Right: scrolling feature cards -->
+        <div class="feature-col-fade overflow-hidden -mr-6 sm:-mr-10 lg:-mr-16">
+
+          <!-- Row 1: slides left -->
+          <div class="flex w-max gap-4 feature-track-left">
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/33bdc6-plus/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Registration</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Multi-tier ticketing, pricing tiers, and delegate access codes.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/421bcd-dollar/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Payments</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Multi-currency gateways with invoicing and automated receipts.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/1b714e-tick/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">QR Check-in</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Instant delegate verification and check-in at the venue door.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/5656e5-camera/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Badge Printing</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Auto-generated branded badges printed on delegate arrival.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/17125d-star/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Speaker Profiles</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Speaker bios, headshots, and session assignment management.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/628100-notebook/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Agenda Builder</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Multi-track schedules built and published live to all delegates.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/1fded0-mobile/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Mobile App</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">iOS &amp; Android companion for personal agendas and networking.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/b1dccf-video-cam/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Live Streaming</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Embedded streams with in-app viewing for remote attendees.</p>
+            </article>
+
+            <!-- Duplicate set for seamless loop -->
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/33bdc6-plus/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Registration</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Multi-tier ticketing, pricing tiers, and delegate access codes.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/421bcd-dollar/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Payments</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Multi-currency gateways with invoicing and automated receipts.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/1b714e-tick/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">QR Check-in</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Instant delegate verification and check-in at the venue door.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/5656e5-camera/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Badge Printing</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Auto-generated branded badges printed on delegate arrival.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/17125d-star/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Speaker Profiles</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Speaker bios, headshots, and session assignment management.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/628100-notebook/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Agenda Builder</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Multi-track schedules built and published live to all delegates.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/1fded0-mobile/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Mobile App</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">iOS &amp; Android companion for personal agendas and networking.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/b1dccf-video-cam/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Live Streaming</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Embedded streams with in-app viewing for remote attendees.</p>
+            </article>
+
+          </div>
+
+          <!-- Row 2: slides right -->
+          <div class="mt-4 flex w-max gap-4 feature-track-right">
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/313578-megaphone/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Push Notifications</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Real-time alerts and announcements sent to all delegates.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/1acc3d-heart/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Attendee Networking</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">In-app profiles, messaging, and attendee matchmaking.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/637858-flash/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Session Scanning</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">QR attendance tracking per session for accurate reporting.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/49654f-trophy/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Certificates</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Auto-generated PDF certificates issued after sessions.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/4f52f8-cube/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Exhibitor Booths</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Booth listings, exhibitor profiles, and lead capture tools.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/7d956f-wallet/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Sponsor Tiers</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Visibility packages, branded placement, and sponsor reporting.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/8924a0-mail/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Email &amp; SMS</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Bulk and transactional messaging campaigns to delegates.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/49b6f4-target/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Analytics &amp; Reports</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Live revenue, attendance, and activity dashboards.</p>
+            </article>
+
+            <!-- Duplicate set for seamless loop -->
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/313578-megaphone/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Push Notifications</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Real-time alerts and announcements sent to all delegates.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/1acc3d-heart/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Attendee Networking</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">In-app profiles, messaging, and attendee matchmaking.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/637858-flash/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Session Scanning</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">QR attendance tracking per session for accurate reporting.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/49654f-trophy/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Certificates</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Auto-generated PDF certificates issued after sessions.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/4f52f8-cube/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Exhibitor Booths</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Booth listings, exhibitor profiles, and lead capture tools.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/7d956f-wallet/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Sponsor Tiers</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Visibility packages, branded placement, and sponsor reporting.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/8924a0-mail/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Email &amp; SMS</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Bulk and transactional messaging campaigns to delegates.</p>
+            </article>
+
+            <article class="content-box w-52 shrink-0 border border-neutral-200 bg-neutral-50 p-5" aria-hidden="true">
+              <img src="https://bvconuycpdvgzbvbkijl.supabase.co/storage/v1/object/public/sizes/49b6f4-target/dynamic/200/color.webp" alt="" aria-hidden="true" class="h-12 w-12 object-contain" />
+              <h3 class="mt-4 text-sm font-extrabold text-neutral-950">Analytics &amp; Reports</h3>
+              <p class="mt-1.5 text-xs leading-5 text-neutral-500">Live revenue, attendance, and activity dashboards.</p>
+            </article>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-y border-neutral-200 bg-neutral-50 py-24">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+
+      <div class="max-w-xl">
+        <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-[#319db5]">How it works</p>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-neutral-950 sm:text-4xl">
+          One platform, start to finish
+        </h2>
+        <p class="mt-5 text-base leading-8 text-neutral-600">
+          BCOMMZ is not a point tool. It is the operating layer that carries your event from setup through to final reporting.
+        </p>
+      </div>
+
+      <div class="relative mt-14 grid gap-px sm:grid-cols-5">
+
+        <article class="content-box bg-white p-7 shadow-sm">
+          <span class="text-3xl font-extrabold text-[#319db5]/25 leading-none">01</span>
+          <h3 class="mt-4 font-extrabold text-neutral-950">Configure</h3>
+          <p class="mt-2 text-sm leading-6 text-neutral-600">Set up branding, ticket types, access levels, registration forms, roles, and programme content.</p>
+        </article>
+
+        <article class="content-box bg-white p-7 shadow-sm">
+          <span class="text-3xl font-extrabold text-[#319db5]/25 leading-none">02</span>
+          <h3 class="mt-4 font-extrabold text-neutral-950">Publish</h3>
+          <p class="mt-2 text-sm leading-6 text-neutral-600">Launch the public event website with live registration, speakers, agenda, and sponsor content.</p>
+        </article>
+
+        <article class="content-box bg-white p-7 shadow-sm">
+          <span class="text-3xl font-extrabold text-[#319db5]/25 leading-none">03</span>
+          <h3 class="mt-4 font-extrabold text-neutral-950">Register</h3>
+          <p class="mt-2 text-sm leading-6 text-neutral-600">Capture delegates, process payments, issue confirmations, and manage access codes automatically.</p>
+        </article>
+
+        <article class="content-box bg-white p-7 shadow-sm">
+          <span class="text-3xl font-extrabold text-[#319db5]/25 leading-none">04</span>
+          <h3 class="mt-4 font-extrabold text-neutral-950">Operate</h3>
+          <p class="mt-2 text-sm leading-6 text-neutral-600">Run check-in, print badges, broadcast communications, and engage attendees through the app.</p>
+        </article>
+
+        <article class="content-box bg-white p-7 shadow-sm">
+          <span class="text-3xl font-extrabold text-[#319db5]/25 leading-none">05</span>
+          <h3 class="mt-4 font-extrabold text-neutral-950">Report</h3>
+          <p class="mt-2 text-sm leading-6 text-neutral-600">Review delegate counts, attendance, revenue, activity logs, and export reports for stakeholders.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Solutions / Event Gallery -->
+  <section id="solutions" class="relative bg-white pt-24 pb-8">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+      <div class="max-w-2xl">
+        <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-[#319db5]">Events we've powered</p>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-neutral-950 sm:text-4xl lg:text-5xl">
+          Real events. Real results.
+        </h2>
+        <p class="mt-5 text-base leading-8 text-neutral-600">
+          From continent-wide industry conferences to intimate corporate summits — a selection of events BCOMMZ has powered end to end.
+        </p>
+      </div>
+    </div>
+
+    <!-- Gallery grid: full width, outside container -->
+    <div id="gallery-wrap" data-collapsed="true" class="relative mt-10 overflow-hidden transition-[max-height] duration-700 ease-in-out" style="max-height: 300px;">
+    <div class="grid gap-3 px-6 sm:px-10 lg:px-16 sm:grid-cols-2 lg:grid-cols-3">
+
+        <!-- Featured card 1 -->
+        <article class="group relative h-[280px] overflow-hidden rounded-2xl sm:col-span-2 lg:col-span-2">
+          <div class="h-full w-full bg-neutral-800 transition-transform duration-500 ease-out group-hover:scale-105">
+            <div class="flex h-full w-full items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#319db5]">Technology · Cape Town</p>
+            <p class="mt-1 text-lg font-extrabold text-white">AfricaCom Summit</p>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="group relative h-[280px] overflow-hidden rounded-2xl">
+          <div class="h-full w-full bg-neutral-800 transition-transform duration-500 ease-out group-hover:scale-105">
+            <div class="flex h-full w-full items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#319db5]">Mining & Resources · Johannesburg</p>
+            <p class="mt-1 text-lg font-extrabold text-white">Mining Indaba</p>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="group relative h-[280px] overflow-hidden rounded-2xl">
+          <div class="h-full w-full bg-neutral-800 transition-transform duration-500 ease-out group-hover:scale-105">
+            <div class="flex h-full w-full items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#319db5]">Human Resources · Johannesburg</p>
+            <p class="mt-1 text-lg font-extrabold text-white">HR Indaba</p>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="group relative h-[280px] overflow-hidden rounded-2xl">
+          <div class="h-full w-full bg-neutral-800 transition-transform duration-500 ease-out group-hover:scale-105">
+            <div class="flex h-full w-full items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#319db5]">Energy · Cape Town</p>
+            <p class="mt-1 text-lg font-extrabold text-white">Africa Oil Week</p>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="group relative h-[280px] overflow-hidden rounded-2xl">
+          <div class="h-full w-full bg-neutral-800 transition-transform duration-500 ease-out group-hover:scale-105">
+            <div class="flex h-full w-full items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#319db5]">Technology · Lagos</p>
+            <p class="mt-1 text-lg font-extrabold text-white">West Africa Tech Summit</p>
+          </div>
+        </article>
+
+        <!-- Featured card 2 -->
+        <article class="group relative h-[280px] overflow-hidden rounded-2xl sm:col-span-2 lg:col-span-2">
+          <div class="h-full w-full bg-neutral-800 transition-transform duration-500 ease-out group-hover:scale-105">
+            <div class="flex h-full w-full items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#319db5]">Business & Finance · Nairobi</p>
+            <p class="mt-1 text-lg font-extrabold text-white">Synergy Africa</p>
+          </div>
+        </article>
+
+        <!-- Card 7 -->
+        <article class="group relative h-[280px] overflow-hidden rounded-2xl">
+          <div class="h-full w-full bg-neutral-800 transition-transform duration-500 ease-out group-hover:scale-105">
+            <div class="flex h-full w-full items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true" class="h-10 w-10 text-neutral-700">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-6">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#319db5]">Financial Services · Johannesburg</p>
+            <p class="mt-1 text-lg font-extrabold text-white">Finance Forum</p>
+          </div>
+        </article>
+
+    </div>
+    </div>
+
+    <div class="relative z-10 mt-8 flex justify-center">
+      <button id="gallery-toggle" onclick="toggleGallery()" class="button-shape group inline-flex items-center gap-3 bg-[#319db5] px-8 py-4 text-sm font-bold text-white shadow-lg shadow-[#319db5]/25 transition-all duration-200 hover:bg-[#2a87a0] hover:shadow-[#319db5]/35 hover:-translate-y-px">
+        <span id="gallery-toggle-text">View more</span>
+        <span class="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 transition-transform duration-300">
+          <svg id="gallery-toggle-icon" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </button>
+    </div>
+
+    <!-- Dark rising-up fade from the next section -->
+    <div id="gallery-fade" class="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-neutral-950 to-transparent transition-opacity duration-500"></div>
+  </section>
+
+  <!-- Integrations -->
+  <section id="integrations" class="bg-neutral-950 py-24">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+      <div class="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+
+        <!-- Left: text -->
+        <div>
+          <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-[#319db5]">Integrations</p>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl">
+            Connected at every output
+          </h2>
+          <p class="mt-6 text-base leading-8 text-neutral-400">
+            BCOMMZ does not operate in isolation. It connects to payment processors, email and SMS providers, mobile APIs, document generation, and export systems — producing real outputs at every stage of the event.
+          </p>
+
+          <div class="mt-10 grid grid-cols-2 gap-4">
+            <div class="content-box border border-neutral-800 bg-neutral-900 p-5">
+              <p class="text-sm font-bold text-white">Payments</p>
+              <p class="mt-1 text-xs leading-5 text-neutral-500">Integrated payment gateways, multi-currency, and invoice generation.</p>
+            </div>
+            <div class="content-box border border-neutral-800 bg-neutral-900 p-5">
+              <p class="text-sm font-bold text-white">Email & SMS</p>
+              <p class="mt-1 text-xs leading-5 text-neutral-500">Bulk and transactional messaging via connected email and SMS providers.</p>
+            </div>
+            <div class="content-box border border-neutral-800 bg-neutral-900 p-5">
+              <p class="text-sm font-bold text-white">Mobile API</p>
+              <p class="mt-1 text-xs leading-5 text-neutral-500">Live data sync to the companion iOS and Android event app.</p>
+            </div>
+            <div class="content-box border border-neutral-800 bg-neutral-900 p-5">
+              <p class="text-sm font-bold text-white">Documents & exports</p>
+              <p class="mt-1 text-xs leading-5 text-neutral-500">PDF badges, certificates, Excel reports, and bulk data exports.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: integrations image + floating logo circles -->
+        <div class="relative">
+          <img src="integrations.png" alt="BCOMMZ integration connections" class="w-full rounded-[var(--box-radius)]" />
+
+          <!-- Paystack — large, top-left -->
+          <div class="badge-float absolute top-[10%] left-[8%]" style="animation-delay:0s">
+            <div class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-white shadow-2xl shadow-black/50 p-3">
+              <img src="integrations/paystack.png" alt="Paystack" class="h-full w-full object-contain" />
+            </div>
+          </div>
+
+          <!-- Flutterwave — extra large, center-right -->
+          <div class="badge-float-b absolute top-[38%] right-[8%]" style="animation-delay:0.9s">
+            <div class="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-white shadow-2xl shadow-black/50 p-3">
+              <img src="integrations/flutterwave.png" alt="Flutterwave" class="h-full w-full object-contain" />
+            </div>
+          </div>
+
+          <!-- SendGrid — medium, bottom-center -->
+          <div class="badge-float absolute bottom-[18%] left-[38%]" style="animation-delay:1.8s">
+            <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white shadow-2xl shadow-black/50 p-2.5">
+              <img src="integrations/sendgrid.png" alt="SendGrid" class="h-full w-full object-contain" />
+            </div>
+          </div>
+
+          <!-- Flutterwave — small, top-right -->
+          <div class="badge-float-b absolute top-[8%] right-[28%]" style="animation-delay:2.6s">
+            <div class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-white shadow-2xl shadow-black/50 p-2">
+              <img src="integrations/flutterwave.png" alt="Flutterwave" class="h-full w-full object-contain" />
+            </div>
+          </div>
+
+          <!-- Paystack — small, bottom-right -->
+          <div class="badge-float absolute bottom-[10%] right-[12%]" style="animation-delay:1.2s">
+            <div class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-white shadow-2xl shadow-black/50 p-2">
+              <img src="integrations/paystack.png" alt="Paystack" class="h-full w-full object-contain" />
+            </div>
+          </div>
+
+          <!-- SendGrid — large, left-middle -->
+          <div class="badge-float-b absolute top-[58%] left-[6%]" style="animation-delay:0.4s">
+            <div class="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-white shadow-2xl shadow-black/50 p-3">
+              <img src="integrations/sendgrid.png" alt="SendGrid" class="h-full w-full object-contain" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Social proof -->
+  <section class="bg-white py-24">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+
+      <div class="max-w-2xl">
+        <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-[#319db5]">Proven at scale</p>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-neutral-950 sm:text-4xl lg:text-5xl">
+          Events that ran on BCOMMZ
+        </h2>
+        <p class="mt-5 text-base leading-8 text-neutral-600">
+          From continent-wide mining conferences to fast-paced technology summits — here is what teams have achieved with BCOMMZ behind their events.
+        </p>
+      </div>
+
+      <!-- Testimonial slider -->
+      <div class="mt-14 flex items-center gap-4 sm:gap-8">
+
+        <!-- Prev -->
+        <button onclick="testiSlide(-1)" aria-label="Previous testimonial"
+          class="button-shape shrink-0 flex h-12 w-12 items-center justify-center border border-neutral-200 bg-white text-neutral-950 shadow-sm transition hover:border-neutral-300 hover:bg-neutral-50">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+
+        <!-- Viewport -->
+        <div class="flex-1 overflow-hidden">
+          <div id="testi-track" class="flex transition-transform duration-500 ease-in-out">
+
+            <!-- Slide 1 -->
+            <div class="w-full shrink-0">
+              <article class="content-box border border-neutral-200 bg-neutral-50 p-10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" class="h-7 w-7 text-[#319db5]/40">
+                  <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Z" />
+                </svg>
+                <p class="mt-6 text-base leading-8 text-neutral-700">
+                  "The entire registration and check-in process ran flawlessly across three days and over 2,000 delegates. Our team had full visibility at every stage."
+                </p>
+                <div class="mt-8 flex items-center gap-4">
+                  <div class="h-11 w-11 rounded-full bg-neutral-300"></div>
+                  <div>
+                    <p class="text-sm font-bold text-neutral-950">Event Director</p>
+                    <p class="text-xs text-neutral-500">AfricaCom Summit</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="w-full shrink-0">
+              <article class="content-box border border-neutral-200 bg-neutral-50 p-10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" class="h-7 w-7 text-[#319db5]/40">
+                  <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Z" />
+                </svg>
+                <p class="mt-6 text-base leading-8 text-neutral-700">
+                  "Having one platform handle the website, registrations, badges, and the app meant we didn't need five different vendors. Everything just worked together."
+                </p>
+                <div class="mt-8 flex items-center gap-4">
+                  <div class="h-11 w-11 rounded-full bg-neutral-300"></div>
+                  <div>
+                    <p class="text-sm font-bold text-neutral-950">Operations Lead</p>
+                    <p class="text-xs text-neutral-500">Mining Indaba</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="w-full shrink-0">
+              <article class="content-box border border-neutral-200 bg-neutral-50 p-10">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true" class="h-7 w-7 text-[#319db5]/40">
+                  <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179Z" />
+                </svg>
+                <p class="mt-6 text-base leading-8 text-neutral-700">
+                  "Delegates could see their personal agenda, receive updates, and check in — all through one app. The experience felt polished and professional throughout."
+                </p>
+                <div class="mt-8 flex items-center gap-4">
+                  <div class="h-11 w-11 rounded-full bg-neutral-300"></div>
+                  <div>
+                    <p class="text-sm font-bold text-neutral-950">Conference Manager</p>
+                    <p class="text-xs text-neutral-500">West Africa Tech Summit</p>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Next -->
+        <button onclick="testiSlide(1)" aria-label="Next testimonial"
+          class="button-shape shrink-0 flex h-12 w-12 items-center justify-center border border-neutral-200 bg-white text-neutral-950 shadow-sm transition hover:border-neutral-300 hover:bg-neutral-50">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true" class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Placeholder: Final CTA -->
+  <section class="bg-neutral-50 py-20 transition-colors dark:bg-neutral-900">
+    <div class="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
+      <div class="content-box bg-neutral-950 px-7 py-12 text-white dark:bg-white dark:text-neutral-950 sm:px-12 lg:flex lg:items-center lg:justify-between">
+        <div class="max-w-2xl">
+          <p class="text-xs font-extrabold uppercase tracking-[0.2em] text-neutral-400">Final conversion section</p>
+          <h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] sm:text-4xl">
+            Ready to see how BCOMMZ fits your event?
+          </h2>
+          <p class="mt-4 leading-8 text-neutral-300 dark:text-neutral-600">
+            This section should close the page with a clear demo or consultation action,
+            supported by a short reassurance about configuration, branding, and implementation.
+          </p>
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3 lg:mt-0 lg:pl-10">
+          <a href="#contact" class="button-shape inline-flex items-center bg-white px-6 py-3.5 text-sm font-bold text-neutral-950 transition hover:bg-neutral-200 dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800">
+            Book a demo
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="button-arrow ml-2 h-4 w-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+          </a>
+
+          <a href="#features" class="button-shape inline-flex items-center border border-neutral-600 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-white/10 dark:border-neutral-300 dark:text-neutral-950 dark:hover:bg-neutral-100">
+            Review features
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" class="border-t border-neutral-800 bg-neutral-950">
+    <div class="mx-auto max-w-7xl px-6 py-14 sm:px-10 lg:px-16 lg:py-16">
+
+      <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-5">
+        <div>
+          <h3 class="text-sm font-extrabold text-white">Product</h3>
+          <ul class="mt-5 space-y-3.5 text-sm text-neutral-400">
+            <li><a href="#features" class="transition hover:text-white">Registration</a></li>
+            <li><a href="#features" class="transition hover:text-white">Payments & Pricing</a></li>
+            <li><a href="#features" class="transition hover:text-white">Attendance & Badges</a></li>
+            <li><a href="#features" class="transition hover:text-white">Mobile App</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-extrabold text-white">Solutions</h3>
+          <ul class="mt-5 space-y-3.5 text-sm text-neutral-400">
+            <li><a href="#solutions" class="transition hover:text-white">Conferences</a></li>
+            <li><a href="#solutions" class="transition hover:text-white">Summits</a></li>
+            <li><a href="#solutions" class="transition hover:text-white">Exhibitions</a></li>
+            <li><a href="#solutions" class="transition hover:text-white">Hybrid Events</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-extrabold text-white">Company</h3>
+          <ul class="mt-5 space-y-3.5 text-sm text-neutral-400">
+            <li><a href="#" class="transition hover:text-white">About BCOMMZ</a></li>
+            <li><a href="#" class="transition hover:text-white">About Brevity</a></li>
+            <li><a href="#" class="transition hover:text-white">Partners</a></li>
+            <li><a href="#" class="transition hover:text-white">Careers</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-extrabold text-white">Resources</h3>
+          <ul class="mt-5 space-y-3.5 text-sm text-neutral-400">
+            <li><a href="#" class="transition hover:text-white">Documentation</a></li>
+            <li><a href="#integrations" class="transition hover:text-white">Integrations</a></li>
+            <li><a href="#" class="transition hover:text-white">Event Guides</a></li>
+            <li><a href="#" class="transition hover:text-white">Help Centre</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-extrabold text-white">Get in touch</h3>
+          <ul class="mt-5 space-y-3.5 text-sm text-neutral-400">
+            <li><a href="#" class="transition hover:text-white">Contact</a></li>
+            <li><a href="#" class="transition hover:text-white">Book a Demo</a></li>
+            <li><a href="#" class="transition hover:text-white">Support</a></li>
+            <li><a href="#" class="transition hover:text-white">Implementation</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-14">
+        <p class="text-base font-medium text-neutral-400">
+          Ask AI what BCOMMZ can do for you
+        </p>
+
+        <div class="mt-4 flex flex-wrap items-center gap-4">
+          <a href="#" target="_blank" rel="noopener noreferrer" data-ai-provider="chatgpt" class="ai-logo-link" aria-label="Ask ChatGPT what BCOMMZ can do for you" title="ChatGPT">
+            <img src="data:image/webp;base64,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" alt="ChatGPT" />
+          </a>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" data-ai-provider="perplexity" class="ai-logo-link" aria-label="Ask Perplexity what BCOMMZ can do for you" title="Perplexity">
+            <img src="data:image/webp;base64,UklGRooDAABXRUJQVlA4TH4DAAAvZ4AZEEehqG0kx8uf7Wrf1wsFM23buPzZTrtbM23buPzZTrtbA5Fk/Cf400A00UXQQPbt806/+u++GQAAEBi0VgiMwCCSBzuSau307fq2kG5tk5RGbxeKJZFi1GT2GYlUlr7/SwwCjTXLz4j+T0Ce//56uQ5+19f++9sxl37/PniQz2/HEu+9Rzr8PC517D3a69synwcPuD8u8N1jvp7mvPQe9XCa0Xvcw2nSd498OE747LFfX24cPfrvNy7h+fvIm8ffj1z/AP6ecz77n7DPOf/8I/hLzsOf4TWf/c/Y52+FOluiPRxsESsz5Eshk3YBAV2iqcr4p+dSpIeVKFLocSgG+1XsKPbmK0DLdRXlXleBljJhBd/WwbYrckjEQWUF9owHsE+A2GI7gO0uhIMJILZMtwVQ1xjcBEiHJUwA9h6GdxXAfl4rQDp4IO41gM5pEiDmsbgC6DQFqDqPxhWgnlID7Hw8FN8DVDZmFYB6SN4mQOyDCZAaD8pNAEmwTYC0HpabMLEyD6EZ3wO7ZqqmW7JvJm8hNaO2Nu63+Q+wsyVbuVXboneivmBXMVF9yTC6CpAECUDj6ipATKBWAI3KBBDzD64AGpMJIOZjrgAakQkg5rdcATQeE0DMp7gCaDQmgJhPcwXQWEwAMZ/jCqCRmACV+TxXAI3DBKg6X8IVQKMwAarOl3EF0BhaAarOl3IF0AjaBFSdL+cKoPfXJqD26bNcAfTeLAG1F3IF2N9ZA9RezBWoA/AVuPwfSbCNRTabjSzQbQB0AdlsNps7uT3DKkZ13u0oTLi5i6Ie38xphYn1HKnHD2u72cx4SECVoEpA1U2rvfC69gCbTkDbBIgFpQC1+wc3AcRC2gGo33ATQCyergbY+wQ3AaSNpquA1Pgk7yogPcRiAqTWZ3i3BdhH0gog5rPcdwAaxyEBYr6EK4BG0QBUnS/jCqBBfKx96gzfMx6EegFvIlEv4m0Ko/FCbrKKoVw6eDE3WcHbtZi0vgI3Kff+q5SYr8KtKnb6UujQ+YKHw8HmefdQaMjnQnH2OQ9/hqecf/wZjjmf/wi/c865/xO8fzj/Afo82sd3HDsO0f3IN78Ed80Tf4R2PU7JfWDDKU9+uYQ1nPLcH0FdT3n+lyGi/piXPF7CGb7kpZ+eQxm+vuSC519DFP2Xl1z6/OXyfL2r4Xr58faS5wM=" alt="Perplexity" />
+          </a>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" data-ai-provider="claude" class="ai-logo-link" aria-label="Ask Claude what BCOMMZ can do for you" title="Claude">
+            <img src="data:image/webp;base64,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" alt="Claude" />
+          </a>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" data-ai-provider="gemini" class="ai-logo-link" aria-label="Ask Gemini what BCOMMZ can do for you" title="Gemini">
+            <img src="data:image/webp;base64,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" alt="Gemini" />
+          </a>
+
+          <a href="#" target="_blank" rel="noopener noreferrer" data-ai-provider="grok" class="ai-logo-link" aria-label="Ask Grok what BCOMMZ can do for you" title="Grok">
+            <img src="data:image/webp;base64,UklGRtQDAABXRUJQVlA4TMcDAAAvZ4AZEG+hoG0bJkWw8Ie7h4Eg2xb3BB9Bti3uCT6CbFvcE3xq27Zh3DY7uQNAcBgEQdODw1bOF5b6ZVO/bCzde9NisVhAbdu2rI1ENnEzfZnJ2ng/ZTVljJWkgvf//4EFxUK+R/R/AtT66ul0bpD1uX457tXW1UuDQr4d91tUNUra/N6n2tco7fmY5leDAtf7BC8o8/mwZlej1M1hRY1yN4dFLyh5s1/wC2U/7yJ7lP4lcioeqsAR5a8D5weASilV4RHWSqnfDwE7pZrH8KQqlFlW1eq5THJZ1ahTkWTE+n/eSiR3neDfpkDiDBIeUV5xI1I+lUeclyTPxRHHC4qgL/2ntfZzuLRpxNEiPzF25uKp16vE0evs2s+ZCSezTBw5IDM9MbU3C8SRHnnJlVt6HRJH0uSlHbe18k0cSeqsPmZuOQ+C7+JI8gs5XbnS3+042mkOzIMgKI7fTU5XLp3HThDVZvK9ICyOQZ3RXy70vSC1OAZn5KMZnwdBcnEMT/mIjzmN9OIY/crHMnoTpBfHuM1GM3rDhuJYgCnisKE4FqBj2OsNxHHxVy5TxCC9OC53mWiGLdKL48o5kz6i04nj9/Fi5hDf83ChCcnFkeR8AdBHLlkIw5dk4khy0gAgc2jI4hKakdyR5IjwPfSVxRD6SmZJ+g7RPjRncQ/1qSzJSSPehig5TKEukSXZY6lE3nPwoTaNJX2H5XOoy+g9iSXvgpW+SJbssbpIlr7F+jkjF2rXWd4ECRluc7iFzCo790jZRiSHMTSusV4jqQnNyMGE3Ao7CtLa0JSFDrFdNBqk9qExC/jQsKTXSG0Y7vIYQrPE/kf6KeSRRxfiZ2xDw7DNBFOI3XY+onPpI162+mR4Qi5thE62+ctom43EOGzywahFNogN2PKDUa/zkciALa+MG+TThgw21BPjIzLqv80d0suVCx1ymkj6FvFu8vYiMTETlzrJqSPpNaLdxKCb7PBp757LnSAnRzqNsJm46U2QkyHvgqCZuW2PH7iF9hwRHzaZWmQlngOW6lsyb/AzN7DssVLffIrJ4Kemu84GCS83v2waWvzcZNe5RWLp+sFaawfTCn50qqvXKG2iv16jPE2KDyco7/GcoL2hxNWfdbpHkQ9Pq7RBkRtVrRKUuVaqWVPqo1Kvj2GvVPUQ/lNKqfoRVN+qB1CrYF2+fWjflO5VRZ8Kd1YLX4t23i9RdcGag1q8OxWrOai1r4U6H9T6p6ZE9V6l3J+K0zyp1Me3ojTPO7Vh9acpRf20U1tXT6e3c1bN+fR63Kn1AA==" alt="Grok" />
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-14 flex items-center gap-5">
+        <div class="h-px flex-1 bg-neutral-800"></div>
+
+        <a href="#home" class="inline-flex items-center text-xl font-extrabold tracking-[0.14em] text-white">
+          <span class="mr-2 inline-grid h-7 w-7 place-items-center rounded-lg bg-brand text-sm tracking-normal text-white">B</span>
+          BCOMMZ
+        </a>
+
+        <div class="h-px flex-1 bg-neutral-800"></div>
+      </div>
+
+      <div class="flex flex-col gap-6 pt-8 text-sm text-neutral-500 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <span>© <span id="current-year">2026</span> BCOMMZ by Brevity Communications.</span>
+          <a href="#" class="transition hover:text-white">Security</a>
+          <a href="#" class="transition hover:text-white">Privacy</a>
+          <a href="#" class="transition hover:text-white">Terms</a>
+          <a href="#" class="transition hover:text-white">Accessibility</a>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <a href="#" aria-label="Instagram" class="button-shape grid h-10 w-10 place-items-center border border-neutral-700 text-neutral-400 transition hover:border-white hover:bg-white hover:text-neutral-950">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-[18px] w-[18px]">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+
+          <a href="#" aria-label="LinkedIn" class="button-shape grid h-10 w-10 place-items-center border border-neutral-700 text-neutral-400 transition hover:border-white hover:bg-white hover:text-neutral-950">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-[18px] w-[18px]">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+          </a>
+
+          <a href="#" aria-label="X" class="button-shape grid h-10 w-10 place-items-center border border-neutral-700 text-neutral-400 transition hover:border-white hover:bg-white hover:text-neutral-950">
+            <svg viewBox="0 0 24 24" aria-hidden="true" class="h-4 w-4 fill-current">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817-5.967 6.817H1.68l7.73-8.835L1.254 2.25h6.826l4.713 6.231 5.451-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
+            </svg>
+          </a>
+
+          <a href="#" aria-label="Facebook" class="button-shape grid h-10 w-10 place-items-center border border-neutral-700 text-neutral-400 transition hover:border-white hover:bg-white hover:text-neutral-950">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-[18px] w-[18px]">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let testiIndex = 0;
+    const testiTotal = 3;
+    function testiSlide(dir) {
+      testiIndex = (testiIndex + dir + testiTotal) % testiTotal;
+      document.getElementById('testi-track').style.transform = `translateX(-${testiIndex * 100}%)`;
+    }
+
+    function toggleGallery() {
+      const wrap = document.getElementById('gallery-wrap');
+      const fade = document.getElementById('gallery-fade');
+      const text = document.getElementById('gallery-toggle-text');
+      const icon = document.getElementById('gallery-toggle-icon');
+      const isCollapsed = wrap.dataset.collapsed === 'true';
+      if (isCollapsed) {
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        fade.style.opacity = '0';
+        text.textContent = 'View less';
+        icon.style.transform = 'rotate(180deg)';
+        wrap.dataset.collapsed = 'false';
+      } else {
+        wrap.style.maxHeight = '300px';
+        fade.style.opacity = '1';
+        text.textContent = 'View more';
+        icon.style.transform = 'rotate(0deg)';
+        wrap.dataset.collapsed = 'true';
+      }
+    }
+
+    const words = [
+      "conferences.",
+      "summits.",
+      "exhibitions.",
+      "hybrid events.",
+      "large-scale gatherings."
+    ];
+
+    const typingElement = document.getElementById("typing-text");
+    let wordIndex = 0;
+    let characterIndex = 0;
+    let deleting = false;
+
+    function typeLoop() {
+      const currentWord = words[wordIndex];
+
+      if (!deleting) {
+        characterIndex += 1;
+        typingElement.textContent = currentWord.slice(0, characterIndex);
+
+        if (characterIndex === currentWord.length) {
+          deleting = true;
+          setTimeout(typeLoop, 1300);
+          return;
+        }
+      } else {
+        characterIndex -= 1;
+        typingElement.textContent = currentWord.slice(0, characterIndex);
+
+        if (characterIndex === 0) {
+          deleting = false;
+          wordIndex = (wordIndex + 1) % words.length;
+        }
+      }
+
+      setTimeout(typeLoop, deleting ? 30 : 58);
+    }
+
+    typeLoop();
+
+    const slides = Array.from(document.querySelectorAll(".hero-slide"));
+    const dots = Array.from(document.querySelectorAll(".slide-dot"));
+    let activeSlide = 0;
+    let slideTimer;
+
+    function showSlide(index) {
+      activeSlide = index;
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("is-active", slideIndex === activeSlide);
+      });
+      dots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === activeSlide;
+        dot.classList.toggle("w-7", isActive);
+        dot.classList.toggle("w-2.5", !isActive);
+        dot.classList.toggle("bg-white", isActive);
+        dot.classList.toggle("bg-white/55", !isActive);
+      });
+    }
+
+    function startSlideshow() {
+      clearInterval(slideTimer);
+      slideTimer = setInterval(() => {
+        showSlide((activeSlide + 1) % slides.length);
+      }, 4500);
+    }
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        showSlide(index);
+        startSlideshow();
+      });
+    });
+
+    showSlide(0);
+    startSlideshow();
+
+    const bcommzPrompt = [
+      "I am evaluating BCOMMZ for an event.",
+      "",
+      "BCOMMZ is a reusable white-label event-management application. It supports attendee registration and profile management, ticket pricing and payments, access codes, speakers and agendas, attendance and session check-in, QR badge printing, moderated Q&A, sponsors and exhibitors, hotel bookings, bulk email and SMS, certificates, live streams, news, push notifications, personal agendas, chat, reporting, and a companion mobile app.",
+      "",
+      "Based on this context:",
+      "1. Explain what BCOMMZ can do for my event.",
+      "2. Recommend a practical workflow from registration through post-event reporting.",
+      "3. Highlight the most useful capabilities for organisers, attendees, sponsors, speakers, and staff.",
+      "4. List the key questions I should ask before implementation.",
+      "Keep the answer clear and practical."
+    ].join("\n");
+
+    const encodedPrompt = encodeURIComponent(bcommzPrompt);
+
+    const aiProviderUrls = {
+      chatgpt: `https://chatgpt.com/?q=${encodedPrompt}`,
+      perplexity: `https://www.perplexity.ai/search?q=${encodedPrompt}`,
+      claude: `https://claude.ai/new?q=${encodedPrompt}`,
+      gemini: `https://gemini.google.com/app?q=${encodedPrompt}`,
+      grok: `https://grok.com/?q=${encodedPrompt}`
+    };
+
+    document.querySelectorAll("[data-ai-provider]").forEach((link) => {
+      const provider = link.dataset.aiProvider;
+      link.href = aiProviderUrls[provider] || aiProviderUrls.chatgpt;
+    });
+
+    document.getElementById("current-year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
